@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  background-color: rgb(178, 65, 110);
+  color: rgb(242, 192, 192);
+  width: 80%;
+  margin: 0 auto;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  margin: 3rem auto;
+  display: grid;
+  background-color: aqua;
+}
+
+h1 {
+  font-size: 5rem;
+  color: rgb(242, 192, 192);
+  line-height: 0.8;
+  margin: 3rem 0 1rem;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.container {
+  background-color: rgba(174, 86, 189, 0.3);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  border: 1px solid black;
+}
