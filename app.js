@@ -19,13 +19,23 @@ function Product(name) {
 const products = [
   new Product("bag"),
   new Product("banana"),
+  new Product("bathroom"),
   new Product("boots"),
   new Product("breakfast"),
   new Product("bubblegum"),
+  new Product("chair"),
   new Product("cthulhu"),
   new Product("dog-duck"),
+  new Product("dragon"),
+  new Product("pen"),
+  new Product("pet-sweep"),
+  new Product("scissors"),
+  new Product("shark"),
   new Product("sweep"),
   new Product("tauntaun"),
+  new Product("unicorn"),
+  new Product("water-can"),
+  new Product("wine-glass"),
 ];
 
 // function to choose a random index
@@ -94,6 +104,12 @@ image1.addEventListener("click", handleImgClick);
 image2.addEventListener("click", handleImgClick);
 image3.addEventListener("click", handleImgClick);
 
+// make button view results
+const viewResults = document.getElementById("view-results");
+viewResults.addEventListener("click", showResults);
+
+renderProducts();
+
 //show results
 function showResults() {
   // render the results
@@ -108,9 +124,39 @@ function showResults() {
     li.textContent = `${product.name} was viewed ${product.views} times, and clicked ${product.clicks} times`;
     results.appendChild(li);
   }
+  renderChart();
 }
-// make button view results
-const viewResults = document.getElementById("view-results");
-viewResults.addEventListener("click", showResults);
 
-renderProducts();
+function renderChart() {
+  const ctx = document.getElementById("myChart");
+
+  const labels = [];
+  const views = [];
+  const clicks = [];
+
+  for (let i = 0; i < products.length; i++) {
+    labels.push(products[i].name);
+    views.push(products[i].views);
+    clicks.push(products[i].clicks);
+  }
+
+  // run the Chart function (that does the chart making)
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "# of views",
+          data: views,
+          borderWidth: 1,
+        },
+        {
+          label: "# of clicks",
+          data: clicks,
+          borderWidth: 1,
+        },
+      ],
+    },
+  });
+}
