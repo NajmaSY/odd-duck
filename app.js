@@ -1,7 +1,7 @@
 // DOM Nodes
-let image1 = document.getElementById("image1");
-let image2 = document.getElementById("image2");
-let image3 = document.getElementById("image3");
+const img1 = document.getElementById("img1");
+const img2 = document.getElementById("img2");
+const img3 = document.getElementById("img3");
 
 //make sure the user only has 25 clicks
 let userClicks = 0;
@@ -9,22 +9,27 @@ const maxClicks = 25;
 
 const products = [];
 
+// function to choose a random index
+function getRandomIndex() {
+  return Math.floor(Math.random() * products.length);
+}
+
 // keep each product in an object in a constructor
 function Product(name, views, clicks) {
   this.name = name;
   this.src = `./images/${name}.jpg`;
-  this.views = 0;
-  this.clicks = 0;
+  this.views = views;
+  this.clicks = clicks;
 
   //take new object that is created, and put it into the array
-  products.push(this)
+  products.push(this);
 }
 
 // make the products
 //if there is nothing in local storage, instantiate/create default/zero clicks products
 //BUT if there is something in local storage, get that, and turn into my products
 
-if (localStorage.getItem('products') === null) {
+if (localStorage.getItem("products") === null) {
   new Product("bag", 0, 0);
   new Product("banana", 0, 0);
   new Product("bathroom", 0, 0);
@@ -45,58 +50,44 @@ if (localStorage.getItem('products') === null) {
   new Product("water-can", 0, 0);
   new Product("wine-glass", 0, 0);
 } else {
-  const productsLS = JSON.parse(localStorage.getItem("products"))
+  const productsLS = JSON.parse(localStorage.getItem("products"));
   //LS is local storage
   //for each item in the productsLS array, make a new product
-  for (let i = 0; i < productsLS.length; i++){
+  for (let i = 0; i < productsLS.length; i++) {
     //create a new product for each item in the array (ad the Product function automatically adds it to the array)
     //instantiate - get the first item name/views/clicks from local storage then 2nd etc...
     new Product(productsLS[i].name, productsLS[i].views, productsLS[i].clicks);
-
   }
-}
-
-
-
-// function to choose a random index
-function getRandomIndex() {
-  return Math.floor(Math.random() * products.length)
 }
 
 // function to render 3 random products on the page (using the 3 img tags)
 function renderProducts() {
-  // get 2 random indexes from our products array
-  let chosenProductIndex = [],
+  // get 3 random indexes from our products array
 
   // prevent the three images being the same product and in the next attempt after each click
-  function getUniqueRandomIndex() {
-    let randomIndex = getRandomIndex(),
 
-    while (chosenProductIndex.includes(randomIndex)) {
-      randomIndex = getUniqueRandomIndex();
-    }
-    return randomIndex;
+  // get 3 indexs from our products array
+  let prod1 = getRandomIndex();
+  let prod2 = getRandomIndex();
+  let prod3 = getRandomIndex();
+
+  // make sure they aren't the same
+  while (prod1 === prod2 || prod1 === prod3 || prod2 === prod3) {
+    prod2 = getRandomIndex();
+    prod3 = getRandomIndex();
   }
-  //next set of products are different from the previous set
-  for (let i = 0; i < 3; i++) {
-    chosenProductIndex[i] = getUniqueRandomIndex();
-  }
-  console.log(getUniqueRandomIndex)
 
-
-  
   // change the src of our 3 images
-  image1.src = products[chosenProductIndex[0]].src,
-  image2.src = products[chosenProductIndex[1]].src,
-  image3.src = products[chosenProductIndex[2]].src,
-  image1.alt = products[chosenProductIndex[0]].name,
-  image2.alt = products[chosenProductIndex[1]].name,
-  image3.alt = products[chosenProductIndex[2]].name,
-
-  // increase the product views
-  products[chosenProductIndex[0]].views++;
-  products[chosenProductIndex[1]].views++;
-  products[chosenProductIndex[2]].views++;
+  (image1.src = products[prod1].src),
+    (image2.src = products[prod2].src),
+    (image3.src = products[prod3].src),
+    (image1.alt = products[prod1].name),
+    (image2.alt = products[prod2].name),
+    (image3.alt = products[prod3].name),
+    // increase the product views
+    products[prod1].views++;
+  products[prod2].views++;
+  products[prod3].views++;
 }
 
 // handle what happens when the img is being clicked
@@ -105,6 +96,7 @@ function handleImgClick(event) {
   // check if the clicks has run out
   if (userClicks >= maxClicks) {
     alert("you have run out of votes");
+
     renderChart();
     //take our array after we have updated the clicks and views, and add to localStorage
     localStorage.setItem("products", JSON.stringify(products));
@@ -125,18 +117,13 @@ function handleImgClick(event) {
       break;
     }
   }
-  
+
+  renderProducts();
 }
 
-image1.addEventListener("click", handleImgClick),
-image2.addEventListener("click", handleImgClick),
-image3.addEventListener("click", handleImgClick),
-
-// make button view results
-const viewResults = document.getElementById("view-results")
-viewResults.addEventListener("click", showResults);
-
-renderProducts();
+image1.addEventListener("click", handleImgClick);
+image2.addEventListener("click", handleImgClick);
+image3.addEventListener("click", handleImgClick);
 
 //show results
 function showResults() {
@@ -156,7 +143,7 @@ function showResults() {
 }
 
 function renderChart() {
-  const ctx = document.getElementById("myChart"),
+  const ctx = document.getElementById("myChart");
 
   const labels = [];
   const views = [];
@@ -190,3 +177,7 @@ function renderChart() {
 }
 
 renderProducts();
+
+// make button view results
+const viewResults = document.getElementById("view-results");
+viewResults.addEventListener("click", showResults);
