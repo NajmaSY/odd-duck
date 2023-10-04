@@ -78,12 +78,12 @@ function renderProducts() {
   }
 
   // change the src of our 3 images
-  (image1.src = products[prod1].src),
-    (image2.src = products[prod2].src),
-    (image3.src = products[prod3].src),
-    (image1.alt = products[prod1].name),
-    (image2.alt = products[prod2].name),
-    (image3.alt = products[prod3].name),
+  (img1.src = products[prod1].src),
+    (img2.src = products[prod2].src),
+    (img3.src = products[prod3].src),
+    (img1.alt = products[prod1].name),
+    (img2.alt = products[prod2].name),
+    (img3.alt = products[prod3].name),
     // increase the product views
     products[prod1].views++;
   products[prod2].views++;
@@ -121,9 +121,9 @@ function handleImgClick(event) {
   renderProducts();
 }
 
-image1.addEventListener("click", handleImgClick);
-image2.addEventListener("click", handleImgClick);
-image3.addEventListener("click", handleImgClick);
+img1.addEventListener("click", handleImgClick);
+img2.addEventListener("click", handleImgClick);
+img3.addEventListener("click", handleImgClick);
 
 //show results
 function showResults() {
