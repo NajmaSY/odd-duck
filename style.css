@@ -10,7 +10,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: minmax(50px, auto) repeat(3, 1fr) minmax(100px, auto);
   grid-gap: 10px;
-  width: 80vw;
+
   min-height: 100vh;
   margin: 3rem auto;
   padding: 20px;
@@ -54,9 +54,10 @@ h1 {
   list-style-type: circle;
   font-size: 2rem;
   margin-left: 10px;
+  background-color: rgb(212, 123, 138);
 }
 
-#button {
+#view-results {
   grid-column: 3 / span 2;
   grid-row: 3;
   display: flex;
