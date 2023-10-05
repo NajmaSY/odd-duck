@@ -3,6 +3,8 @@ const img1 = document.getElementById("img1");
 const img2 = document.getElementById("img2");
 const img3 = document.getElementById("img3");
 
+const resetButton = document.getElementById("reset-button");
+
 //make sure the user only has 25 clicks
 let userClicks = 0;
 const maxClicks = 25;
@@ -20,7 +22,6 @@ function Product(name, views, clicks) {
   this.src = `./images/${name}.jpg`;
   this.views = views;
   this.clicks = clicks;
-
   //take new object that is created, and put it into the array
   products.push(this);
 }
@@ -29,36 +30,60 @@ function Product(name, views, clicks) {
 //if there is nothing in local storage, instantiate/create default/zero clicks products
 //BUT if there is something in local storage, get that, and turn into my products
 
-if (localStorage.getItem("products") === null) {
-  new Product("bag", 0, 0);
-  new Product("banana", 0, 0);
-  new Product("bathroom", 0, 0);
-  new Product("boots", 0, 0);
-  new Product("breakfast", 0, 0);
-  new Product("bubblegum", 0, 0);
-  new Product("chair", 0, 0);
-  new Product("cthulhu", 0, 0);
-  new Product("dog-duck", 0, 0);
-  new Product("dragon", 0, 0);
-  new Product("pen", 0, 0);
-  new Product("pet-sweep", 0, 0);
-  new Product("scissors", 0, 0);
-  new Product("shark", 0, 0);
-  new Product("sweep", 0, 0);
-  new Product("tauntaun", 0, 0);
-  new Product("unicorn", 0, 0);
-  new Product("water-can", 0, 0);
-  new Product("wine-glass", 0, 0);
-} else {
-  const productsLS = JSON.parse(localStorage.getItem("products"));
-  //LS is local storage
-  //for each item in the productsLS array, make a new product
-  for (let i = 0; i < productsLS.length; i++) {
-    //create a new product for each item in the array (ad the Product function automatically adds it to the array)
-    //instantiate - get the first item name/views/clicks from local storage then 2nd etc...
-    new Product(productsLS[i].name, productsLS[i].views, productsLS[i].clicks);
+function getProducts() {
+  if (localStorage.getItem("products") === null) {
+    new Product("bag", 0, 0);
+    new Product("banana", 0, 0);
+    new Product("bathroom", 0, 0);
+    new Product("boots", 0, 0);
+    new Product("breakfast", 0, 0);
+    new Product("bubblegum", 0, 0);
+    new Product("chair", 0, 0);
+    new Product("cthulhu", 0, 0);
+    new Product("dog-duck", 0, 0);
+    new Product("dragon", 0, 0);
+    new Product("pen", 0, 0);
+    new Product("pet-sweep", 0, 0);
+    new Product("scissors", 0, 0);
+    new Product("shark", 0, 0);
+    new Product("sweep", 0, 0);
+    new Product("tauntaun", 0, 0);
+    new Product("unicorn", 0, 0);
+    new Product("water-can", 0, 0);
+    new Product("wine-glass", 0, 0);
+  } else {
+    const productsLS = JSON.parse(localStorage.getItem("products"));
+    //LS is local storage
+    //for each item in the productsLS array, make a new product
+    for (let i = 0; i < productsLS.length; i++) {
+      //create a new product for each item in the array (ad the Product function automatically adds it to the array)
+      //instantiate - get the first item name/views/clicks from local storage then 2nd etc...
+      new Product(
+        productsLS[i].name,
+        productsLS[i].views,
+        productsLS[i].clicks
+      );
+    }
   }
 }
+
+function resetData() {
+  const clickedReset = prompt("Are you sure you want to start over?");
+  if (clickedReset) {
+    localStorage.clear();
+    userClicks = 0;
+
+    //reset views and clicks for each product
+    for (let i = 0; i < products.length; i++) {
+      products[i].views = 0;
+      products[i].clicks = 0;
+    }
+
+    renderProducts();
+  }
+}
+
+resetButton.addEventListener("click", resetData);
 
 // function to render 3 random products on the page (using the 3 img tags)
 function renderProducts() {
@@ -97,7 +122,7 @@ function handleImgClick(event) {
   if (userClicks >= maxClicks) {
     alert("you have run out of votes");
 
-    renderChart();
+    // renderChart();
     //take our array after we have updated the clicks and views, and add to localStorage
     localStorage.setItem("products", JSON.stringify(products));
     return;
@@ -139,43 +164,10 @@ function showResults() {
     li.textContent = `${product.name} was viewed ${product.views} times, and clicked ${product.clicks} times`;
     results.appendChild(li);
   }
-  renderChart();
+  // renderChart();
 }
 
-function renderChart() {
-  const ctx = document.getElementById("myChart");
-
-  const labels = [];
-  const views = [];
-  const clicks = [];
-
-  for (let i = 0; i < products.length; i++) {
-    labels.push(products[i].name);
-    views.push(products[i].views);
-    clicks.push(products[i].clicks);
-  }
-
-  // run the Chart function (that does the chart making)
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "# of views",
-          data: views,
-          borderWidth: 1,
-        },
-        {
-          label: "# of clicks",
-          data: clicks,
-          borderWidth: 1,
-        },
-      ],
-    },
-  });
-}
-
+getProducts();
 renderProducts();
 
 // make button view results
